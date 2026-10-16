@@ -50,7 +50,7 @@ La sincronización marca como globales las rutas sin módulo reconocido: revisa 
 
 La caché evita repetir la carga de permisos efectivos; esa carga puede ejecutar varias
 consultas SQL. Si se cambian permisos o el contexto de tenant dentro de la misma petición,
-limpia `app(\Ronu\RestGenericClass\Core\Support\Authorization\EffectivePermissionGate::class)->clear()`.
+limpia `app(\Ronu\RestPermissions\Support\Authorization\EffectivePermissionGate::class)->clear()`.
 No se interpretan comodines de presentación ni se crean asignaciones por nombre de rol.
 `passesFilters()` sigue siendo un punto de extensión; se elimina la lectura de la clave
 inexistente `route-permissions` y se utiliza la configuración pública del paquete.
@@ -308,7 +308,7 @@ Versión de parche: sin cambios de comportamiento con la configuración por defe
   `HasPermissionsController::getModules()`: desaparecen los avisos de PHP ≥ 8.4 por nullable implícito.
   La firma efectiva no cambia, así que las subclases no se ven afectadas.
 - **Script `scripts/enable-channel-authorization.php`**, distribuido con la biblioteca
-  ([guía](../documentacion/doc-es/03-usage/07-enable-channel-authorization-script.md)):
+  ([guía](es/enable-channel-authorization-script.md)):
   - el informe de `--apply` muestra en cada archivo de rutas solo los nombres de su canal (antes listaba los
     de todos los canales en cada archivo; los cambios en disco ya eran correctos);
   - detecta también las declaraciones que van justo después de `<?php`;
@@ -328,7 +328,7 @@ Versión de parche: sin cambios de comportamiento con la configuración por defe
 - **Explicit nullable parameters** in `BaseModel`, `BaseModelMongo` and `getModules()`: no more PHP ≥ 8.4
   implicit-nullable deprecations. The effective signatures are unchanged, so subclasses are unaffected.
 - **`scripts/enable-channel-authorization.php`** now ships with the library
-  ([guide](../documentacion/doc-en/03-usage/07-enable-channel-authorization-script.md)): per-file `--apply`
+  ([guide](en/enable-channel-authorization-script.md)): per-file `--apply`
   report with only that channel's names, detection of declarations right after `<?php`,
   `--grant=Role:@file.json` for explicit permission lists, and a completed/interrupted step summary.
 
@@ -339,7 +339,7 @@ Versión de parche: sin cambios de comportamiento con la configuración por defe
 Status / Estado: **released / publicada** (2026-10-15).
 Everything new is opt-in: without the new route attributes and configuration, authorization behaves as
 in v2.7.1. / Todo lo nuevo es opt-in: sin los atributos y la configuración nuevos, la autorización se
-comporta como en v2.7.1. Reference / referencia: [permissions-public-api.md §10](permissions-public-api.md).
+comporta como en v2.7.1. Reference / referencia: [permissions-public-api.md §10](public-api.md).
 
 ## Español
 

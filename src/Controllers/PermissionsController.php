@@ -1,8 +1,8 @@
 <?php
 
-namespace Ronu\RestGenericClass\Core\Controllers;
+namespace Ronu\RestPermissions\Controllers;
 
-use Ronu\RestGenericClass\Core\Traits\HasPermissionsController;
+use Ronu\RestPermissions\Traits\HasPermissionsController;
 
 class PermissionsController
 {

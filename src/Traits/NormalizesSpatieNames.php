@@ -1,6 +1,6 @@
 <?php
 
-namespace Ronu\RestGenericClass\Core\Traits;
+namespace Ronu\RestPermissions\Traits;
 
 use BackedEnum;
 

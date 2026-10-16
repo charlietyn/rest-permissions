@@ -1,6 +1,6 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 

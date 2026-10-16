@@ -1,6 +1,6 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit\Fixtures;
+namespace Ronu\RestPermissions\Tests\Unit\Fixtures;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -9,7 +9,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase;
 use Ronu\RestGenericClass\Core\Providers\RestGenericClassServiceProvider;
-use Ronu\RestGenericClass\Core\Traits\HasReadableUserPermissions;
+use Ronu\RestPermissions\RestPermissionsServiceProvider;
+use Ronu\RestPermissions\Traits\HasReadableUserPermissions;
 
 abstract class ChannelAuthorizationTestCase extends TestCase
 {
@@ -17,14 +18,14 @@ abstract class ChannelAuthorizationTestCase extends TestCase
 
     protected function getPackageProviders($app): array
     {
-        return [RestGenericClassServiceProvider::class];
+        return [RestGenericClassServiceProvider::class, RestPermissionsServiceProvider::class];
     }
 
     protected function defineEnvironment($app): void
     {
         $app['config']->set('database.default', 'testing');
         $app['config']->set('permission.models.permission', ChannelPermission::class);
-        $app['config']->set('rest-generic-class.permissions.authorization', [
+        $app['config']->set('rest-permissions.authorization', [
             'route_prefixes' => ['admin', 'client'],
             'naming' => 'route_name',
             'on_unresolved' => 'deny',

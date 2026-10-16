@@ -1,6 +1,6 @@
 <?php
 
-namespace Ronu\RestGenericClass\Core\Support\Permissions\Contracts;
+namespace Ronu\RestPermissions\Support\Permissions\Contracts;
 
 use Illuminate\Support\Collection;
 

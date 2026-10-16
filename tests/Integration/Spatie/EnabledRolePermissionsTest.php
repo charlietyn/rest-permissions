@@ -1,11 +1,11 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Integration\Spatie;
+namespace Ronu\RestPermissions\Tests\Integration\Spatie;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Ronu\RestGenericClass\Core\Models\SpatiePermission;
-use Ronu\RestGenericClass\Core\Models\SpatieRole;
+use Ronu\RestPermissions\Models\SpatiePermission;
+use Ronu\RestPermissions\Models\SpatieRole;
 
 /**
  * SpatieRole::enabled_permissions(): the role's own permissions active now plus every non-restricted

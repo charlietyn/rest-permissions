@@ -1,6 +1,6 @@
 <?php
 
-namespace Ronu\RestGenericClass\Core\Support\Permissions;
+namespace Ronu\RestPermissions\Support\Permissions;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;

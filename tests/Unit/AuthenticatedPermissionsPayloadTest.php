@@ -1,11 +1,11 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\TestCase;
-use Ronu\RestGenericClass\Core\Traits\HasReadableUserPermissions;
+use Ronu\RestPermissions\Traits\HasReadableUserPermissions;
 
 final class AuthenticatedPermissionsPayloadTest extends TestCase
 {

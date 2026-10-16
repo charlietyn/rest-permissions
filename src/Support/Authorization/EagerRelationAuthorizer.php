@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Ronu\RestGenericClass\Core\Support\Authorization;
+namespace Ronu\RestPermissions\Support\Authorization;
 
 use Ronu\RestGenericClass\Core\Authorization\GateRelationAuthorizer;
 

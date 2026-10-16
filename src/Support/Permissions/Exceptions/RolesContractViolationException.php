@@ -1,10 +1,10 @@
 <?php
 
-namespace Ronu\RestGenericClass\Core\Support\Permissions\Exceptions;
+namespace Ronu\RestPermissions\Support\Permissions\Exceptions;
 
 use RuntimeException;
-use Ronu\RestGenericClass\Core\Support\Permissions\Contracts\ProvidesRolePermissions;
-use Ronu\RestGenericClass\Core\Support\Permissions\Contracts\ProvidesRoles;
+use Ronu\RestPermissions\Support\Permissions\Contracts\ProvidesRolePermissions;
+use Ronu\RestPermissions\Support\Permissions\Contracts\ProvidesRoles;
 
 class RolesContractViolationException extends RuntimeException
 {
@@ -29,7 +29,7 @@ class RolesContractViolationException extends RuntimeException
         return new self(sprintf(
             "User model [%s] has no roles relation named '%s'. Define the relation method, "
                 . "or declare 'const ROLES_RELATION = \\'<your_relation>\\';' on the model "
-                . "(or set 'rest-generic-class.permissions.roles_relation' in config) to point "
+                . "(or set 'rest-permissions.roles_relation' in config) to point "
                 . "the permission engine at the correct relation.",
             $class,
             $relation

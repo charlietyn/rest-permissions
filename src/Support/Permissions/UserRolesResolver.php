@@ -1,11 +1,11 @@
 <?php
 
-namespace Ronu\RestGenericClass\Core\Support\Permissions;
+namespace Ronu\RestPermissions\Support\Permissions;
 
 use Illuminate\Support\Collection;
-use Ronu\RestGenericClass\Core\Support\Permissions\Contracts\ProvidesRolePermissions;
-use Ronu\RestGenericClass\Core\Support\Permissions\Contracts\ProvidesRoles;
-use Ronu\RestGenericClass\Core\Support\Permissions\Exceptions\RolesContractViolationException;
+use Ronu\RestPermissions\Support\Permissions\Contracts\ProvidesRolePermissions;
+use Ronu\RestPermissions\Support\Permissions\Contracts\ProvidesRoles;
+use Ronu\RestPermissions\Support\Permissions\Exceptions\RolesContractViolationException;
 
 /**
  * Single entry point to resolve a user's roles and the permissions reachable through them.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Container\Container;
@@ -9,8 +9,8 @@ use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Facade;
 use PHPUnit\Framework\TestCase;
-use Ronu\RestGenericClass\Core\Support\Permissions\RolePermissionReader;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\RolePermissionItem;
+use Ronu\RestPermissions\Support\Permissions\RolePermissionReader;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\RolePermissionItem;
 
 final class RolePermissionReaderTest extends TestCase
 {

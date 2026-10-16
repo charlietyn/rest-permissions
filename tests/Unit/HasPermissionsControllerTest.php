@@ -1,11 +1,11 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Ronu\RestGenericClass\Core\Traits\HasPermissionsController;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\ChannelAuthorizationTestCase;
+use Ronu\RestPermissions\Traits\HasPermissionsController;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\ChannelAuthorizationTestCase;
 
 /** HasPermissionsService's constructor calls parent::__construct(), as real controllers have a parent. */
 abstract class PermissionsControllerBase

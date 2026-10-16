@@ -1,6 +1,6 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,13 +9,13 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Ronu\RestGenericClass\Core\Middleware\SpatieAuthorize;
+use Ronu\RestPermissions\Middleware\SpatieAuthorize;
 use Ronu\RestGenericClass\Core\Models\BaseModel;
 use Ronu\RestGenericClass\Core\Services\BaseService;
-use Ronu\RestGenericClass\Core\Support\Authorization\EagerRelationAuthorizer;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\ChannelAuthorizationTestCase;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\ChannelPermission;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\ChannelUser;
+use Ronu\RestPermissions\Support\Authorization\EagerRelationAuthorizer;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\ChannelAuthorizationTestCase;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\ChannelPermission;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\ChannelUser;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class EagerRelationAuthorizationTest extends ChannelAuthorizationTestCase
@@ -33,12 +33,12 @@ final class EagerRelationAuthorizationTest extends ChannelAuthorizationTestCase
         DB::table('eager_pets')->insert(['id' => 1, 'client_id' => 1, 'name' => 'Rex']);
         DB::table('eager_notes')->insert(['id' => 1, 'client_id' => 1, 'body' => 'secret']);
         DB::table('eager_vaccines')->insert(['id' => 1, 'pet_id' => 1, 'name' => 'rabies']);
-        config(['rest-generic-class.permissions.authorization.eager_relations' => 'require_read']);
+        config(['rest-generic-class.authorization.eager_relations' => 'require_read']);
     }
 
     public function testOffKeepsTheV271BehaviourWithoutChecks(): void
     {
-        config(['rest-generic-class.permissions.authorization.eager_relations' => 'off']);
+        config(['rest-generic-class.authorization.eager_relations' => 'off']);
         $client = $this->show(['admin.crm.clients.show'], ['pets', 'notes', 'owner']);
         $this->assertTrue($client->relationLoaded('notes'));
     }
@@ -72,7 +72,7 @@ final class EagerRelationAuthorizationTest extends ChannelAuthorizationTestCase
     {
         config([
             'rest-generic-class.filtering.strict_relations' => false,
-            'rest-generic-class.permissions.authorization.eager_relations_to_one' => 'require_read',
+            'rest-generic-class.authorization.eager_relations_to_one' => 'require_read',
         ]);
         $this->assertFalse($this->show(['admin.crm.clients.show'], ['owner'])->relationLoaded('owner'));
         $this->assertTrue($this->show(['admin.crm.clients.show', 'admin.crm.clients.owner.read'], ['owner'])->relationLoaded('owner'));

@@ -1,0 +1,94 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # One revision against each supported Spatie line (^6.21 || ^7.0 || ^8.0), its lowest and
+        # latest resolvable release, on Laravel 12 and 13 (inherited from rest-generic-class 2.8.1).
+        include:
+          - { php: '8.2', laravel: '12.69.0', testbench: '10.11.*', phpunit: '^11.5.50', spatie: '6.21.0' }
+          - { php: '8.2', laravel: '12.69.0', testbench: '10.11.*', phpunit: '^11.5.50', spatie: '^6.21' }
+          - { php: '8.3', laravel: '^12.61.1', testbench: '^10.9', phpunit: '^11.5.50', spatie: '^7.0' }
+          - { php: '8.4', laravel: '^12.61.1', testbench: '^10.9', phpunit: '^11.5.50', spatie: '7.0.0' }
+          - { php: '8.4', laravel: '^12.61.1', testbench: '^10.9', phpunit: '^11.5.50', spatie: '^8.0' }
+          - { php: '8.3', laravel: '13.30.*', testbench: '11.0.*', phpunit: '^12.5.12', spatie: '^6.21' }
+          - { php: '8.3', laravel: '^13.12', testbench: '^11.0', phpunit: '^12.5.12', spatie: '^7.0' }
+          - { php: '8.4', laravel: '^13.12', testbench: '^11.0', phpunit: '^12.5.12', spatie: '8.0.0' }
+          # Reproduction of the rest-generic-class 2.8.0 incident (Laravel 13.36 + Spatie 8.3.0).
+          - { php: '8.4', laravel: '^13.12', testbench: '^11.0', phpunit: '^12.5.12', spatie: '8.3.0' }
+          - { php: '8.5', laravel: '^13.12', testbench: '^11.0', phpunit: '^12.5.12', spatie: '^8.0' }
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - run: composer validate --strict
+      - run: composer require --no-update "laravel/framework:${{ matrix.laravel }}" "spatie/laravel-permission:${{ matrix.spatie }}"
+      - run: composer require --dev --no-update "orchestra/testbench:${{ matrix.testbench }}" "phpunit/phpunit:${{ matrix.phpunit }}"
+      - run: composer update --prefer-dist --no-interaction --no-progress --with-all-dependencies
+      - run: composer audit
+      - run: composer show ronu/rest-generic-class spatie/laravel-permission laravel/framework
+      - run: vendor/bin/phpunit
+
+  databases:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        database: [mysql, pgsql]
+        framework: [laravel12, laravel13]
+        include:
+          - { framework: laravel12, php: '8.2', laravel: '12.69.0', testbench: '10.11.*', phpunit: '^11.5.50' }
+          - { framework: laravel13, php: '8.3', laravel: '13.30.*', testbench: '11.0.*', phpunit: '^12.5.12' }
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: rgc_permissions_test
+          MYSQL_USER: rgc
+          MYSQL_PASSWORD: rgc
+          MYSQL_ROOT_PASSWORD: rgc_test_root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 --silent"
+          --health-interval=10s --health-timeout=5s --health-retries=10
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: rgc_permissions_test
+          POSTGRES_USER: rgc
+          POSTGRES_PASSWORD: rgc
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U rgc -d rgc_permissions_test"
+          --health-interval=10s --health-timeout=5s --health-retries=10
+    env:
+      RGC_AGGREGATE_DRIVER: ${{ matrix.database }}
+      RGC_AGGREGATE_DATABASE: rgc_permissions_test
+      RGC_AGGREGATE_USER: rgc
+      RGC_AGGREGATE_PASSWORD: rgc
+    steps:
+      - uses: actions/checkout@v5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: pdo_mysql, pdo_pgsql, pdo_sqlite
+          coverage: none
+      - run: composer require --no-update "laravel/framework:${{ matrix.laravel }}"
+      - run: composer require --dev --no-update "orchestra/testbench:${{ matrix.testbench }}" "phpunit/phpunit:${{ matrix.phpunit }}"
+      - run: composer update --prefer-dist --no-interaction --no-progress --with-all-dependencies
+      # Spatie models on a real server (e.g. SpatieRole::enabled_permissions SQL per driver).
+      - run: vendor/bin/phpunit --testsuite Integration

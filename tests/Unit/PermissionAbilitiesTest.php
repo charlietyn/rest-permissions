@@ -1,16 +1,16 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Route;
-use Ronu\RestGenericClass\Core\Middleware\SpatieAuthorize;
-use Ronu\RestGenericClass\Core\Resolvers\RouteMeta;
-use Ronu\RestGenericClass\Core\Resolvers\RouteMetaResolver;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\ChannelAuthorizationTestCase;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\ChannelPermission;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\ChannelUser;
+use Ronu\RestPermissions\Middleware\SpatieAuthorize;
+use Ronu\RestPermissions\Resolvers\RouteMeta;
+use Ronu\RestPermissions\Resolvers\RouteMetaResolver;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\ChannelAuthorizationTestCase;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\ChannelPermission;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\ChannelUser;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class PermissionAbilitiesTest extends ChannelAuthorizationTestCase
@@ -25,7 +25,7 @@ final class PermissionAbilitiesTest extends ChannelAuthorizationTestCase
         $this->assertSame([], $meta->requires);
         $this->assertSame('list', $meta->action);
 
-        config(['rest-generic-class.permissions.authorization.naming' => 'derived']);
+        config(['rest-permissions.authorization.naming' => 'derived']);
         $derived = $this->meta($this->route('admin.users.index', 'admin/users', 'UsersController@index'));
         $this->assertSame([$derived->canonicalName], $derived->abilities);
         $this->assertSame([], $derived->requires);
@@ -80,7 +80,7 @@ final class PermissionAbilitiesTest extends ChannelAuthorizationTestCase
 
     public function testDerivedNamingIgnoresTheAttributes(): void
     {
-        config(['rest-generic-class.permissions.authorization.naming' => 'derived']);
+        config(['rest-permissions.authorization.naming' => 'derived']);
         $meta = $this->meta($this->route('admin.users.index', 'admin/users', 'UsersController@index', [
             'permission_ability' => ['read', 'manage'],
             'permission_requires' => ['^^show'],
@@ -184,7 +184,7 @@ final class PermissionAbilitiesTest extends ChannelAuthorizationTestCase
 
     private function meta(Route $route): ?RouteMeta
     {
-        return (new RouteMetaResolver())->resolveFromRoute($route, 'api', [], config('rest-generic-class.permissions.authorization'));
+        return (new RouteMetaResolver())->resolveFromRoute($route, 'api', [], config('rest-permissions.authorization'));
     }
 
     private function user(array $permissions): ChannelUser

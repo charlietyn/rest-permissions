@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Ronu\RestGenericClass\Core\Controllers\PermissionsController;
+use Ronu\RestPermissions\Controllers\PermissionsController;
 
-$prefix = config('rest-generic-class.permissions.routes.prefix', 'permissions');
-$middleware = config('rest-generic-class.permissions.routes.middleware', ['api', 'auth:api']);
+$prefix = config('rest-permissions.routes.prefix', 'permissions');
+$middleware = config('rest-permissions.routes.middleware', ['api', 'auth:api']);
 $middleware = is_array($middleware)
     ? $middleware
     : array_values(array_filter(array_map('trim', explode(',', (string)$middleware))));

@@ -9,10 +9,10 @@ contrato estable, que es soporte interno no estable, y como migrar.
 
 Para que un modelo de usuario resuelva roles y permisos via este paquete:
 
-- `Ronu\RestGenericClass\Core\Support\Permissions\Contracts\ProvidesRoles`
+- `Ronu\RestPermissions\Support\Permissions\Contracts\ProvidesRoles`
   - `provideRoles(): Collection` — el trait `HasReadableUserPermissions` ya provee
     una implementacion por defecto basada en la relacion de roles configurable.
-- `Ronu\RestGenericClass\Core\Support\Permissions\Contracts\ProvidesRolePermissions`
+- `Ronu\RestPermissions\Support\Permissions\Contracts\ProvidesRolePermissions`
   - `provideRolePermissions(): Collection` — el trait `HasReadableRolePermissions`
     ya provee una implementacion por defecto (`enabled_permissions`).
 
@@ -25,7 +25,7 @@ Si el modelo de usuario declara `ProvidesRoles` pero sus roles no implementan
 - `PermissionCompressorContract` — resuelto por contenedor; permite sustituir el
   algoritmo de compresion de wildcards.
 - Constante de modelo `ROLES_RELATION` o config
-  `rest-generic-class.permissions.roles_relation` — nombre de la relacion de roles
+  `rest-permissions.roles_relation` — nombre de la relacion de roles
   (default `roles`). Soporta cardinalidad 1:N y N:N.
 - `permission.*` de Spatie (models, pivot_models, table_names, column_names) — se
   siguen leyendo tal cual; no se reemplazan.
@@ -120,10 +120,10 @@ app Laravel completa; usando SQLite en memoria donde hay consulta):
 
 ## 7. Autorización por canales y Gate opcional (v2.6.0)
 
-Configura `rest-generic-class.permissions.authorization`; consulta las
-[notas de versión](release-notes-channel-authorization.md) para activar los cambios en orden.
+Configura `rest-permissions.authorization`; consulta las
+[notas de versión](release-notes-rest-generic-class-2.x.md) para activar los cambios en orden.
 
-`Ronu\RestGenericClass\Core\Support\Authorization\EffectivePermissionGate` ofrece
+`Ronu\RestPermissions\Support\Authorization\EffectivePermissionGate` ofrece
 `allows(object $user, string $ability): ?bool` y `clear(): void`. Devuelve `true` para
 nombres efectivos exactos y `null` cuando no concede, permitiendo continuar con policies
 y otros Gates. No interpreta comodines de presentación ni concede por nombre de rol.
@@ -167,7 +167,7 @@ Esta opción no es una lista de permisos del usuario ni un filtro de lectura del
 `RoutePermissionRefresher::refresh()`, antes de llamar al resolver. `null` incluye todas
 las rutas del ámbito; un array exige una coincidencia de prefijo de string entre los
 marcadores y `gatherMiddleware()`; `[]` no selecciona ninguna. Acepta alias como
-`maybe.permission` y FQCN como `Ronu\RestGenericClass\Core\Middleware\SpatieAuthorize`,
+`maybe.permission` y FQCN como `Ronu\RestPermissions\Middleware\SpatieAuthorize`,
 incluidos parámetros `:api`, sin expandir alias/grupos. Ignora closures y objetos.
 El resolver y el middleware de autorización no aplican este filtro.
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Integration\Spatie;
+namespace Ronu\RestPermissions\Tests\Integration\Spatie;
 
-use Ronu\RestGenericClass\Core\Models\SpatieRole;
+use Ronu\RestPermissions\Models\SpatieRole;
 use Spatie\Permission\Exceptions\RoleAlreadyExists;
 use Spatie\Permission\Exceptions\RoleDoesNotExist;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace Ronu\RestGenericClass\Core\Support\Permissions\Contracts;
+namespace Ronu\RestPermissions\Support\Permissions\Contracts;
 
 use Illuminate\Support\Collection;
-use Ronu\RestGenericClass\Core\Support\Permissions\PermissionCompressedResult;
+use Ronu\RestPermissions\Support\Permissions\PermissionCompressedResult;
 
 interface PermissionCompressorContract
 {

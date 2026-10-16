@@ -1,17 +1,17 @@
 <?php
 
-namespace Ronu\RestGenericClass\Core\Traits;
+namespace Ronu\RestPermissions\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use MongoDB\Laravel\Eloquent\Model;
-use Ronu\RestGenericClass\Core\Support\Permissions\Contracts\PermissionCompressorContract;
-use Ronu\RestGenericClass\Core\Support\Permissions\RoleInputResolver;
-use Ronu\RestGenericClass\Core\Support\Permissions\RolePermissionAssignmentService;
-use Ronu\RestGenericClass\Core\Support\Permissions\RoutePermissionRefresher;
-use Ronu\RestGenericClass\Core\Support\Permissions\TargetPermissionResolver;
+use Ronu\RestPermissions\Support\Permissions\Contracts\PermissionCompressorContract;
+use Ronu\RestPermissions\Support\Permissions\RoleInputResolver;
+use Ronu\RestPermissions\Support\Permissions\RolePermissionAssignmentService;
+use Ronu\RestPermissions\Support\Permissions\RoutePermissionRefresher;
+use Ronu\RestPermissions\Support\Permissions\TargetPermissionResolver;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**

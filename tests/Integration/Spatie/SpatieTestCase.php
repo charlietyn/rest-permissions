@@ -1,12 +1,13 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Integration\Spatie;
+namespace Ronu\RestPermissions\Tests\Integration\Spatie;
 
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase;
-use Ronu\RestGenericClass\Core\Models\SpatiePermission;
-use Ronu\RestGenericClass\Core\Models\SpatieRole;
+use Ronu\RestPermissions\Models\SpatiePermission;
+use Ronu\RestPermissions\Models\SpatieRole;
 use Ronu\RestGenericClass\Core\Providers\RestGenericClassServiceProvider;
+use Ronu\RestPermissions\RestPermissionsServiceProvider;
 use Spatie\Permission\PermissionServiceProvider;
 
 /**
@@ -25,7 +26,7 @@ abstract class SpatieTestCase extends TestCase
 
     protected function getPackageProviders($app): array
     {
-        return [PermissionServiceProvider::class, RestGenericClassServiceProvider::class];
+        return [PermissionServiceProvider::class, RestGenericClassServiceProvider::class, RestPermissionsServiceProvider::class];
     }
 
     protected function defineEnvironment($app): void

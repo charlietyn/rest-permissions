@@ -1,9 +1,9 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Integration\Spatie;
+namespace Ronu\RestPermissions\Tests\Integration\Spatie;
 
-use Ronu\RestGenericClass\Core\Models\SpatiePermission;
-use Ronu\RestGenericClass\Core\Models\SpatieRole;
+use Ronu\RestPermissions\Models\SpatiePermission;
+use Ronu\RestPermissions\Models\SpatieRole;
 use Spatie\Permission\Contracts\Permission as PermissionContract;
 use Spatie\Permission\Contracts\Role as RoleContract;
 use Spatie\Permission\Exceptions\PermissionAlreadyExists;

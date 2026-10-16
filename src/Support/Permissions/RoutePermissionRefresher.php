@@ -1,12 +1,12 @@
 <?php
 
-namespace Ronu\RestGenericClass\Core\Support\Permissions;
+namespace Ronu\RestPermissions\Support\Permissions;
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Nwidart\Modules\Facades\Module;
-use Ronu\RestGenericClass\Core\Resolvers\RouteMetaResolver;
+use Ronu\RestPermissions\Resolvers\RouteMetaResolver;
 
 /**
  * Syncs the action catalog (Spatie's permissions table) from the application's registered routes.
@@ -43,7 +43,7 @@ final class RoutePermissionRefresher
     public function refresh($guard, $dry, bool $prune = false): array
     {
         $guard = (string) $guard;
-        $cfg = config('rest-generic-class.permissions.authorization', []);
+        $cfg = config('rest-permissions.authorization', []);
         $explicit = (bool) ($cfg['explicit_globals'] ?? false);
         $markers = $cfg['catalog_middleware'] ?? null;
         $modules = class_exists(Module::class) ? Module::toCollection()->map->getName()->values()->all() : [];

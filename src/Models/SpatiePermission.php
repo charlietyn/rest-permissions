@@ -1,8 +1,9 @@
 <?php
 
-namespace Ronu\RestGenericClass\Core\Models;
+namespace Ronu\RestPermissions\Models;
 
 use BackedEnum;
+use Ronu\RestGenericClass\Core\Models\BaseModel;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,7 +14,7 @@ use Spatie\Permission\Guard;
 use Spatie\Permission\PermissionRegistrar;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Traits\RefreshesPermissionCache;
-use Ronu\RestGenericClass\Core\Traits\NormalizesSpatieNames;
+use Ronu\RestPermissions\Traits\NormalizesSpatieNames;
 
 /**
  * @property ?\Illuminate\Support\Carbon $created_at

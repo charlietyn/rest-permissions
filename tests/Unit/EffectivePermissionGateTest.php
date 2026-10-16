@@ -1,15 +1,15 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Ronu\RestGenericClass\Core\Support\Authorization\EffectivePermissionGate;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\ChannelAuthorizationTestCase;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\ChannelUser;
+use Ronu\RestPermissions\Support\Authorization\EffectivePermissionGate;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\ChannelAuthorizationTestCase;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\ChannelUser;
 
 final class EffectivePermissionGateTest extends ChannelAuthorizationTestCase
 {
@@ -40,7 +40,7 @@ final class EffectivePermissionGateTest extends ChannelAuthorizationTestCase
         $this->permission('global.api', restrict: false);
         $this->permission('global.web', 'web', false);
         $this->assertCount(2, $user->effectivePermissions());
-        config(['rest-generic-class.permissions.authorization.register_gate' => false]);
+        config(['rest-permissions.authorization.register_gate' => false]);
         $this->assertCount(0, $user->effectivePermissions());
     }
 
@@ -100,7 +100,7 @@ final class EffectivePermissionGateTest extends ChannelAuthorizationTestCase
         $gate = app(EffectivePermissionGate::class);
         $this->assertTrue($gate->allows($user, 'direct'));
         $this->assertNull($gate->allows($other, 'direct'));
-        config(['rest-generic-class.permissions.authorization.gate_guard' => 'web']);
+        config(['rest-permissions.authorization.gate_guard' => 'web']);
         $this->assertNull($gate->allows($user, 'direct'));
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * enable-channel-authorization.php
  *
- * Migrates a Laravel project that uses ronu/rest-generic-class to channel-scoped authorization
+ * Migrates a Laravel project that uses ronu/rest-generic-class + ronu/rest-permissions to channel-scoped authorization
  * (v2.7.0+): route-name permissions, fail-closed middleware, the HasReadableUserPermissions Gate,
  * explicit globals and a catalog limited to protected routes.
  *
@@ -14,7 +14,7 @@ declare(strict_types=1);
  *   - guard            = the parameter given to that middleware (e.g. maybe.permission:api)
  *   - globals          = protected routes whose name matches --globals (marked with permission_global)
  *
- * Scope: projects of the kwikvet family (ronu/rest-generic-class + the generated security module).
+ * Scope: projects of the kwikvet family (ronu/rest-generic-class, ronu/rest-permissions and the generated security module).
  * Before writing anything it verifies that the project has what --apply needs: the commands
  * permissions:sync-from-routes / roles:assign-permissions (with the options used here) and
  * permission:cache-reset, the library's columns on the permissions table, a reachable database, and
@@ -24,7 +24,7 @@ declare(strict_types=1);
  * Default mode is a dry run: it prints the plan and the route-file diffs and writes nothing.
  *
  * Usage (installed with the library):
- *   php vendor/ronu/rest-generic-class/scripts/enable-channel-authorization.php [--path=/project] [--apply]
+ *   php vendor/ronu/rest-permissions/scripts/enable-channel-authorization.php [--path=/project] [--apply]
  *        [--grant=Role:prefix | --grant=Role:@permissions.json ...]
  *        [--globals=*.auth.permissions,*.auth.user-profile]
  *        [--prefixes=admin,client] [--guard=api] [--skip-sync] [--force] [--php=/usr/bin/php]
@@ -48,9 +48,13 @@ declare(strict_types=1);
  * filtering in the project's auth controller, tests and project documentation.
  */
 
-const MIN_VERSION = '2.7.0';
+// The channel authorization of rest-generic-class 2.7+ lives in ronu/rest-permissions since its 1.0.
+const PACKAGE = 'ronu/rest-permissions';
+const MIN_VERSION = '1.0.0';
 const DEFAULT_GLOBALS = '*.auth.permissions,*.auth.user-profile';
-const AUTHORIZE_CLASS = 'Ronu\\RestGenericClass\\Core\\Middleware\\SpatieAuthorize';
+const AUTHORIZE_CLASS = 'Ronu\\RestPermissions\\Middleware\\SpatieAuthorize';
+// rest-generic-class 2.x name, still accepted through the legacy aliases.
+const LEGACY_AUTHORIZE_CLASS = 'Ronu\\RestGenericClass\\Core\\Middleware\\SpatieAuthorize';
 // Commands (and the options this script passes) that the kwikvet family generates in its security module.
 const REQUIRED_COMMANDS = [
     'permissions:sync-from-routes' => ['guard', 'dry-run'],
@@ -91,10 +95,10 @@ function inspect(string $path): array
         }
     }
 
-    $cfg = config('rest-generic-class.permissions.authorization', []);
+    $cfg = config('rest-permissions.authorization', []);
     $modules = class_exists(Nwidart\Modules\Facades\Module::class)
         ? Nwidart\Modules\Facades\Module::toCollection()->map->getName()->values()->all() : [];
-    $resolver = $app->make(Ronu\RestGenericClass\Core\Resolvers\RouteMetaResolver::class);
+    $resolver = $app->make(Ronu\RestPermissions\Resolvers\RouteMetaResolver::class);
 
     $routes = [];
     $guards = [];
@@ -103,7 +107,7 @@ function inspect(string $path): array
         $protected = false;
         foreach ($mw as $m) {
             [$alias, $params] = array_pad(explode(':', $m, 2), 2, null);
-            if (in_array($alias, $markers, true) || $alias === AUTHORIZE_CLASS) {
+            if (in_array($alias, $markers, true) || $alias === AUTHORIZE_CLASS || $alias === LEGACY_AUTHORIZE_CLASS) {
                 $protected = true;
                 $guards[] = $params ? explode(',', $params)[0] : (string) config('auth.defaults.guard');
             }
@@ -173,7 +177,7 @@ function inspect(string $path): array
         'requirements' => $requirements,
         'app_context_prefixes' => $channels,
         'module_segments' => $moduleSegments,
-        'version' => Composer\InstalledVersions::getPrettyVersion('ronu/rest-generic-class'),
+        'version' => Composer\InstalledVersions::isInstalled(PACKAGE) ? Composer\InstalledVersions::getPrettyVersion(PACKAGE) : null,
         'config_cached' => $app->configurationIsCached(),
         'cfg' => $cfg,
         'markers' => $markers,
@@ -189,7 +193,7 @@ function wrapsAuthorize(string $class): bool
     if (!class_exists($class)) {
         return false;
     }
-    if ($class === AUTHORIZE_CLASS || is_subclass_of($class, AUTHORIZE_CLASS)) {
+    if ($class === AUTHORIZE_CLASS || $class === LEGACY_AUTHORIZE_CLASS || is_subclass_of($class, AUTHORIZE_CLASS)) {
         return true;
     }
     $file = (new ReflectionClass($class))->getFileName();
@@ -211,9 +215,9 @@ if (!is_file("$path/artisan") || !is_file("$path/vendor/autoload.php")) {
 title('1. Inspección');
 $now = runInspect($php, $path, []);
 $installed = ltrim((string) $now['version'], 'v');
-line("ronu/rest-generic-class instalado: {$now['version']}");
-if (version_compare($installed, MIN_VERSION, '<')) {
-    fail('Se necesita ' . MIN_VERSION . ' o superior. Ejecuta primero: composer require ronu/rest-generic-class:^2.7');
+line(PACKAGE . ' instalado: ' . ($now['version'] ?? 'no'));
+if ($now['version'] === null || version_compare($installed, MIN_VERSION, '<')) {
+    fail('Se necesita ' . PACKAGE . ' ' . MIN_VERSION . ' o superior. Ejecuta primero: composer require ' . PACKAGE . ':^1.0');
 }
 if ($now['config_cached']) {
     warn('La configuración está en caché (bootstrap/cache/config.php): los cambios de .env no se leen hasta config:clear/config:cache.');
@@ -397,9 +401,9 @@ startProgress([
 // 1. composer.json constraint
 $composerFile = "$path/composer.json";
 $composer = file_get_contents($composerFile);
-if (preg_match('/"ronu\/rest-generic-class"\s*:\s*"([^"]+)"/', $composer, $m) && !constraintAllowsMin($m[1])) {
-    file_put_contents($composerFile, str_replace($m[0], '"ronu/rest-generic-class": "^2.7"', $composer));
-    ok("composer.json: {$m[1]} → ^2.7");
+if (preg_match('/"ronu\/rest-permissions"\s*:\s*"([^"]+)"/', $composer, $m) && !constraintAllowsMin($m[1], '1.0')) {
+    file_put_contents($composerFile, str_replace($m[0], '"ronu/rest-permissions": "^1.0"', $composer));
+    ok("composer.json: {$m[1]} → ^1.0");
 } else {
     ok('composer.json: la restricción ya exige ' . MIN_VERSION . ' o superior.');
 }
@@ -618,7 +622,7 @@ function writeEnv(string $file, array $values, bool $overwrite): void
         }
     }
     if ($added) {
-        $src = rtrim($src) . "\n\n# Channel-scoped authorization (ronu/rest-generic-class " . MIN_VERSION . "+)\n" . implode("\n", $added) . "\n";
+        $src = rtrim($src) . "\n\n# Channel-scoped authorization (" . PACKAGE . " " . MIN_VERSION . "+)\n" . implode("\n", $added) . "\n";
     }
     file_put_contents($file, $src);
     ok(basename($file) . ' actualizado.');

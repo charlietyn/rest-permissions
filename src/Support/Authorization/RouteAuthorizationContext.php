@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Ronu\RestGenericClass\Core\Support\Authorization;
+namespace Ronu\RestPermissions\Support\Authorization;
 
 use Illuminate\Http\Request;
 use Ronu\RestGenericClass\Core\Authorization\AuthorizationScope;
 use Ronu\RestGenericClass\Core\Contracts\Authorization\AuthorizationContext;
-use Ronu\RestGenericClass\Core\Middleware\SpatieAuthorize;
+use Ronu\RestPermissions\Middleware\SpatieAuthorize;
 
 /**
  * AuthorizationContext of the route permissions: the scope SpatieAuthorize stored on the request

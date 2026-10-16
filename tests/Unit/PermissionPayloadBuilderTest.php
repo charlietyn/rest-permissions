@@ -1,10 +1,10 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use Illuminate\Http\Request;
 use PHPUnit\Framework\TestCase;
-use Ronu\RestGenericClass\Core\Support\Permissions\PermissionPayloadBuilder;
+use Ronu\RestPermissions\Support\Permissions\PermissionPayloadBuilder;
 
 final class PermissionPayloadBuilderTest extends TestCase
 {

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Ronu\RestGenericClass\Core\Support\Authorization;
+namespace Ronu\RestPermissions\Support\Authorization;
 
 use WeakMap;
 
@@ -22,7 +22,7 @@ final class EffectivePermissionGate
             return null;
         }
 
-        $guard = config('rest-generic-class.permissions.authorization.gate_guard');
+        $guard = config('rest-permissions.authorization.gate_guard');
         $key = $guard ?? '';
         $sets = $this->permissions[$user] ?? [];
         if (!array_key_exists($key, $sets)) {

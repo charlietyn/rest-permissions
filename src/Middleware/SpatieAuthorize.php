@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
-namespace Ronu\RestGenericClass\Core\Middleware;
+namespace Ronu\RestPermissions\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Nwidart\Modules\Facades\Module;
-use Ronu\RestGenericClass\Core\Resolvers\RouteMetaResolver;
-use Ronu\RestGenericClass\Core\Support\Authorization\PermissionDecisionEvaluator;
-use Ronu\RestGenericClass\Core\Support\Authorization\RequiredPermissionResolver;
+use Ronu\RestPermissions\Resolvers\RouteMetaResolver;
+use Ronu\RestPermissions\Support\Authorization\PermissionDecisionEvaluator;
+use Ronu\RestPermissions\Support\Authorization\RequiredPermissionResolver;
 use Spatie\Permission\PermissionRegistrar;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -37,7 +37,7 @@ class SpatieAuthorize
         $guard = $guardParam ?: (string) config('auth.defaults.guard');
 
         $modules = class_exists(Module::class) ? Module::toCollection()->map->getName()->values()->all() : [];
-        $cfg = config('rest-generic-class.permissions.authorization', []);
+        $cfg = config('rest-permissions.authorization', []);
         $resolver = app(RouteMetaResolver::class);
         $meta = $resolver->resolve($request, $guard, $modules, $cfg);
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit\Fixtures;
+namespace Ronu\RestPermissions\Tests\Unit\Fixtures;
 
 use Illuminate\Database\Eloquent\Model;
 

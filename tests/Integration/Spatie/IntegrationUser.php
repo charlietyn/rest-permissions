@@ -1,9 +1,9 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Integration\Spatie;
+namespace Ronu\RestPermissions\Tests\Integration\Spatie;
 
 use Illuminate\Foundation\Auth\User;
-use Ronu\RestGenericClass\Core\Traits\HasReadableUserPermissions;
+use Ronu\RestPermissions\Traits\HasReadableUserPermissions;
 use Spatie\Permission\Traits\HasRoles;
 
 /** A user model composed as in the generated applications: Spatie's HasRoles plus Ronu's readers. */

@@ -1,13 +1,13 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Route;
-use Ronu\RestGenericClass\Core\Middleware\SpatieAuthorize;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\ChannelAuthorizationTestCase;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\ChannelUser;
+use Ronu\RestPermissions\Middleware\SpatieAuthorize;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\ChannelAuthorizationTestCase;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\ChannelUser;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class SpatieAuthorizeTest extends ChannelAuthorizationTestCase
@@ -27,7 +27,7 @@ final class SpatieAuthorizeTest extends ChannelAuthorizationTestCase
 
     public function testLegacyUnresolvedAllowPasses(): void
     {
-        config(['rest-generic-class.permissions.authorization.on_unresolved' => 'allow']);
+        config(['rest-permissions.authorization.on_unresolved' => 'allow']);
         $this->assertSame('passed', $this->handle(null)->getContent());
     }
 
@@ -74,8 +74,8 @@ final class SpatieAuthorizeTest extends ChannelAuthorizationTestCase
     public function testCatalogFilterCannotBypassRuntimeAuthorization(): void
     {
         config([
-            'rest-generic-class.permissions.authorization.catalog_middleware' => [],
-            'rest-generic-class.permissions.authorization.on_unresolved' => 'allow',
+            'rest-permissions.authorization.catalog_middleware' => [],
+            'rest-permissions.authorization.on_unresolved' => 'allow',
         ]);
         $user = new ChannelUser();
         $user->id = 1;

@@ -1,11 +1,11 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\TestCase;
-use Ronu\RestGenericClass\Core\Support\Permissions\PermissionListNormalizer;
-use Ronu\RestGenericClass\Core\Support\Permissions\RolePermissionAssignmentService;
+use Ronu\RestPermissions\Support\Permissions\PermissionListNormalizer;
+use Ronu\RestPermissions\Support\Permissions\RolePermissionAssignmentService;
 
 final class PermissionAssignmentSupportTest extends TestCase
 {

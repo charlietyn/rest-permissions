@@ -1,9 +1,9 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Ronu\RestGenericClass\Core\Support\Permissions\PermissionCompressor;
+use Ronu\RestPermissions\Support\Permissions\PermissionCompressor;
 
 final class PermissionCompressorTest extends TestCase
 {

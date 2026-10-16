@@ -1,13 +1,13 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
-use Ronu\RestGenericClass\Core\Support\Permissions\RoutePermissionRefresher;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\ChannelAuthorizationTestCase;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\ChannelPermission;
+use Ronu\RestPermissions\Support\Permissions\RoutePermissionRefresher;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\ChannelAuthorizationTestCase;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\ChannelPermission;
 
 final class ActionCatalogSyncTest extends ChannelAuthorizationTestCase
 {
@@ -91,7 +91,7 @@ final class ActionCatalogSyncTest extends ChannelAuthorizationTestCase
 
     public function testActionSharedByRoutesIsGlobalOnlyIfEveryRouteIs(): void
     {
-        config(['rest-generic-class.permissions.authorization.explicit_globals' => true]);
+        config(['rest-permissions.authorization.explicit_globals' => true]);
         $global = Route::get('admin/auth/a', fn () => 'ok')->name('admin.auth.a');
         $global->setAction([...$global->getAction(), 'permission_global' => true, 'permission_ability' => 'profile']);
         $restricted = Route::get('admin/auth/b', fn () => 'ok')->name('admin.auth.b');

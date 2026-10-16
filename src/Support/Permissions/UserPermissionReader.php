@@ -1,6 +1,6 @@
 <?php
 
-namespace Ronu\RestGenericClass\Core\Support\Permissions;
+namespace Ronu\RestPermissions\Support\Permissions;
 
 use Illuminate\Support\Collection;
 
@@ -25,7 +25,7 @@ final class UserPermissionReader
         $via = $user->getEnabledPermissionsViaRoles();
 
         // Opt in with the Gate so existing integrations retain their legacy union.
-        if (config('rest-generic-class.permissions.authorization.register_gate', false)) {
+        if (config('rest-permissions.authorization.register_gate', false)) {
             $permissionClass = config('permission.models.permission');
             $query = $permissionClass::query()->notRestricted();
             if ($guard !== null) {

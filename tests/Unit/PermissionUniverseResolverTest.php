@@ -1,6 +1,6 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Container\Container;
@@ -8,8 +8,8 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\Facade;
 use PHPUnit\Framework\TestCase;
-use Ronu\RestGenericClass\Core\Support\Permissions\PermissionUniverseResolver;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\PermissionUniverseItem;
+use Ronu\RestPermissions\Support\Permissions\PermissionUniverseResolver;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\PermissionUniverseItem;
 
 final class PermissionUniverseResolverTest extends TestCase
 {

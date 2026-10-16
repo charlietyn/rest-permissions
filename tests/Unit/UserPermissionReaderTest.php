@@ -1,12 +1,12 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use Illuminate\Support\Collection;
 use Illuminate\Config\Repository;
 use Illuminate\Container\Container;
 use PHPUnit\Framework\TestCase;
-use Ronu\RestGenericClass\Core\Support\Permissions\UserPermissionReader;
+use Ronu\RestPermissions\Support\Permissions\UserPermissionReader;
 
 final class UserPermissionReaderTest extends TestCase
 {

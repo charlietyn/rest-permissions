@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Ronu\RestGenericClass\Core\Support\Authorization;
+namespace Ronu\RestPermissions\Support\Authorization;
 
 /**
  * Evaluates whether a user satisfies a set of required permissions under an

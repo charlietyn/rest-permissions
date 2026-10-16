@@ -1,6 +1,6 @@
 <?php
 
-namespace Ronu\RestGenericClass\Core\Support\Permissions;
+namespace Ronu\RestPermissions\Support\Permissions;
 
 /**
  * Generic notation for granting actions: an action name whose last segment may be `*`.

@@ -1,21 +1,21 @@
 # Activar la autorización por canales con el script de migración
 
-Desde v2.7.1 la biblioteca incluye `scripts/enable-channel-authorization.php`, el script usado para migrar kwikvet a la autorización por canales (v2.7.0+): permisos por nombre de ruta, middleware que falla cerrando, Gate de permisos efectivos, globales explícitos y catálogo limitado a las rutas protegidas.
+El paquete incluye `scripts/enable-channel-authorization.php` (en rest-generic-class desde v2.7.1), el script usado para migrar kwikvet a la autorización por canales (v2.7.0+): permisos por nombre de ruta, middleware que falla cerrando, Gate de permisos efectivos, globales explícitos y catálogo limitado a las rutas protegidas.
 
 ```bash
-php vendor/ronu/rest-generic-class/scripts/enable-channel-authorization.php --path=/ruta/al/proyecto
+php vendor/ronu/rest-permissions/scripts/enable-channel-authorization.php --path=/ruta/al/proyecto
 ```
 
 No es un comando artisan ni está en `bin` de `composer.json`: se ejecuta una vez por proyecto.
 
 ## Alcance
 
-Está pensado para proyectos de la familia kwikvet: `ronu/rest-generic-class` más el módulo de seguridad generado. Antes de escribir nada comprueba que el proyecto tiene lo que `--apply` necesita; si falta algo, `--apply` no se ejecuta, ni siquiera con `--force`:
+Está pensado para proyectos de la familia kwikvet: `ronu/rest-generic-class` y `ronu/rest-permissions` más el módulo de seguridad generado. Antes de escribir nada comprueba que el proyecto tiene lo que `--apply` necesita; si falta algo, `--apply` no se ejecuta, ni siquiera con `--force`:
 
 - los comandos `permissions:sync-from-routes` (`--guard`, `--dry-run`), `roles:assign-permissions` (`--by`, `--guard`, `--prefix`, `--no-create`; `--from` solo si alguna asignación usa un archivo) y `permission:cache-reset`;
 - las columnas de la biblioteca en la tabla de permisos (`name`, `guard_name`, `module`, `route`, `type`, `model`, `restrict`, `action`) y una base de datos accesible;
 - canales identificados por prefijo de URL (`admin/...`), no por subdominio, y todas las rutas protegidas bajo alguno de esos prefijos;
-- `ronu/rest-generic-class` 2.7.0 o superior instalado.
+- `ronu/rest-permissions` 1.0 o superior instalado (la autorización por canales de rest-generic-class 2.7+).
 
 ## Qué inspecciona
 
@@ -59,7 +59,7 @@ Al terminar, o si falla un paso, imprime la lista de pasos con `✔` (hecho), `�
 Usa un archivo cuando los recursos están publicados en varios canales: conceder un prefijo entero como `client.` puede dar a un rol más de lo que debe. Un archivo fuera del proyecto se copia dentro para el comando y se borra después. Los roles deben existir.
 
 ```bash
-php vendor/ronu/rest-generic-class/scripts/enable-channel-authorization.php --path=/ruta/al/proyecto --apply \
+php vendor/ronu/rest-permissions/scripts/enable-channel-authorization.php --path=/ruta/al/proyecto --apply \
     --grant=Administrator:admin. --grant=Client:@client-permissions.json --grant=Veterinarian:mobile.
 ```
 
@@ -81,4 +81,4 @@ php vendor/ronu/rest-generic-class/scripts/enable-channel-authorization.php --pa
 
 El script las imprime al final: restringir el login por canal, filtrar `GET /permissions` por canal, tests de regresión, documentación del proyecto y el orden de despliegue en otros entornos (sincronizar y asignar **antes** de cambiar su `.env`).
 
-Consulta la [configuración](../02-configuration/00-configuration-reference.md) y las [notas de versión](../../../docs/release-notes-channel-authorization.md).
+Consulta la [configuración](https://github.com/charlietyn/rest-generic-class/blob/main/documentacion/doc-es/02-configuration/00-configuration-reference.md) y las [notas de versión](../release-notes-rest-generic-class-2.x.md).

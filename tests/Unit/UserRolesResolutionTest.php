@@ -1,13 +1,13 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use Illuminate\Config\Repository;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\TestCase;
-use Ronu\RestGenericClass\Core\Traits\HasReadableUserPermissions;
+use Ronu\RestPermissions\Traits\HasReadableUserPermissions;
 
 final class UserRolesResolutionTest extends TestCase
 {
@@ -80,7 +80,7 @@ final class UserRolesResolutionTest extends TestCase
         Container::setInstance($container);
 
         $container->instance('config', new Repository([
-            'rest-generic-class' => ['permissions' => ['roles_relation' => 'groups']],
+            'rest-permissions' => ['roles_relation' => 'groups'],
         ]));
 
         $user = new RolesResolutionFakeUser();

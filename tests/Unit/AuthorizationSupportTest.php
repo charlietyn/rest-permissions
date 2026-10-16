@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Container\Container;
@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Facade;
 use PHPUnit\Framework\TestCase;
-use Ronu\RestGenericClass\Core\Support\Authorization\PermissionDecisionEvaluator;
-use Ronu\RestGenericClass\Core\Support\Authorization\RequiredPermissionResolver;
+use Ronu\RestPermissions\Support\Authorization\PermissionDecisionEvaluator;
+use Ronu\RestPermissions\Support\Authorization\RequiredPermissionResolver;
 
 final class AuthorizationSupportTest extends TestCase
 {

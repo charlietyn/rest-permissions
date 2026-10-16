@@ -1,12 +1,12 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
-use Ronu\RestGenericClass\Core\Support\Permissions\ActionPattern;
-use Ronu\RestGenericClass\Core\Support\Permissions\PermissionCompressor;
-use Ronu\RestGenericClass\Core\Support\Permissions\TargetPermissionResolver;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\ChannelAuthorizationTestCase;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\ChannelPermission;
+use Ronu\RestPermissions\Support\Permissions\ActionPattern;
+use Ronu\RestPermissions\Support\Permissions\PermissionCompressor;
+use Ronu\RestPermissions\Support\Permissions\TargetPermissionResolver;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\ChannelAuthorizationTestCase;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\ChannelPermission;
 
 final class ActionPatternAssignmentTest extends ChannelAuthorizationTestCase
 {

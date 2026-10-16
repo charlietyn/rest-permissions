@@ -1,6 +1,6 @@
 <?php
 
-namespace Ronu\RestGenericClass\Core\Traits;
+namespace Ronu\RestPermissions\Traits;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Nwidart\Modules\Facades\Module;
 use Ronu\RestGenericClass\Core\Requests\BaseFormRequest;
-use Ronu\RestGenericClass\Core\Support\Permissions\Contracts\ProvidesRoles;
+use Ronu\RestPermissions\Support\Permissions\Contracts\ProvidesRoles;
 
 trait HasPermissionsController
 {
@@ -295,7 +295,7 @@ trait HasPermissionsController
             'compress_global' => ['nullable', 'boolean'],
         ]);
 
-        $guard = $validated['guard'] ?? config('rest-generic-class.permissions.routes.guard');
+        $guard = $validated['guard'] ?? config('rest-permissions.routes.guard');
         $user = $request->user($guard) ?: $request->user();
 
         if (!$user) {

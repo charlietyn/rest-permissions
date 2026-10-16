@@ -1,12 +1,12 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\TestCase;
-use Ronu\RestGenericClass\Core\Support\Permissions\PermissionFilter;
-use Ronu\RestGenericClass\Core\Traits\HasReadableRolePermissions;
-use Ronu\RestGenericClass\Core\Traits\HasReadableUserPermissions;
+use Ronu\RestPermissions\Support\Permissions\PermissionFilter;
+use Ronu\RestPermissions\Traits\HasReadableRolePermissions;
+use Ronu\RestPermissions\Traits\HasReadableUserPermissions;
 
 final class PermissionFilterTest extends TestCase
 {

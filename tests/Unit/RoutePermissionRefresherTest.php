@@ -1,14 +1,14 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use Illuminate\Support\Facades\Route;
-use Ronu\RestGenericClass\Core\Middleware\SpatieAuthorize;
-use Ronu\RestGenericClass\Core\Resolvers\RouteMeta;
-use Ronu\RestGenericClass\Core\Resolvers\RouteMetaResolver;
-use Ronu\RestGenericClass\Core\Support\Permissions\RoutePermissionRefresher;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\ChannelAuthorizationTestCase;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\ChannelPermission;
+use Ronu\RestPermissions\Middleware\SpatieAuthorize;
+use Ronu\RestPermissions\Resolvers\RouteMeta;
+use Ronu\RestPermissions\Resolvers\RouteMetaResolver;
+use Ronu\RestPermissions\Support\Permissions\RoutePermissionRefresher;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\ChannelAuthorizationTestCase;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\ChannelPermission;
 
 final class RoutePermissionRefresherTest extends ChannelAuthorizationTestCase
 {
@@ -43,7 +43,7 @@ final class RoutePermissionRefresherTest extends ChannelAuthorizationTestCase
     public function testDisabledExplicitGlobalsPreserveModuleBasedRestrictions(): void
     {
         $this->useKnownModules();
-        config(['rest-generic-class.permissions.authorization.explicit_globals' => false]);
+        config(['rest-permissions.authorization.explicit_globals' => false]);
         Route::get('admin/auth/permissions', fn () => 'ok')->name('admin.auth.permissions');
         Route::get('admin/mod_security/users', fn () => 'ok')->name('admin.mod_security.users.index');
 
@@ -55,8 +55,8 @@ final class RoutePermissionRefresherTest extends ChannelAuthorizationTestCase
     public function testDefaultNullOptionsPreserveTheV250LegacyCatalog(): void
     {
         $this->useKnownModules();
-        $defaults = require __DIR__ . '/../../config/rest-generic-class.php';
-        config(['rest-generic-class.permissions.authorization' => $defaults['permissions']['authorization']]);
+        $defaults = require __DIR__ . '/../../config/rest-permissions.php';
+        config(['rest-permissions.authorization' => $defaults['authorization']]);
         Route::prefix('api')->group(function () {
             Route::get('mod_security/users', 'UsersController@index');
             Route::get('ModSecurity/users', 'UsersController@index');
@@ -85,7 +85,7 @@ final class RoutePermissionRefresherTest extends ChannelAuthorizationTestCase
             'admin.other.thing' => false,
         ]);
 
-        config(['rest-generic-class.permissions.authorization.explicit_globals' => true]);
+        config(['rest-permissions.authorization.explicit_globals' => true]);
         $refresher->refresh('api', false);
         $this->assertRestrictions([
             'admin.auth.permissions' => false,
@@ -101,14 +101,14 @@ final class RoutePermissionRefresherTest extends ChannelAuthorizationTestCase
         Route::get('admin/auth/permissions', fn () => 'ok')->name('admin.auth.permissions');
         $refresher = new RoutePermissionRefresher();
         $refresher->refresh('api', false);
-        config(['rest-generic-class.permissions.authorization.explicit_globals' => true]);
+        config(['rest-permissions.authorization.explicit_globals' => true]);
         $refresher->refresh('api', false);
         $this->assertRestrictions(['admin.auth.permissions' => true]);
     }
 
     public function testStandaloneActionAttributeIsGlobalButDefaultsAreNot(): void
     {
-        config(['rest-generic-class.permissions.authorization.explicit_globals' => true]);
+        config(['rest-permissions.authorization.explicit_globals' => true]);
         $route = Route::get('admin/auth/permissions', fn () => 'ok')->name('admin.auth.permissions');
         $route->setAction([...$route->getAction(), 'permission_global' => true]);
         Route::get('admin/auth/user-profile', fn () => 'ok')->name('admin.auth.user-profile')->defaults('permission_global', true);
@@ -126,13 +126,13 @@ final class RoutePermissionRefresherTest extends ChannelAuthorizationTestCase
         $this->assertTrue($route->getAction('permission_global'));
         $this->assertSame(['id' => '42'], $route->parameters());
         $this->assertSame('42', $route->run());
-        $meta = app(RouteMetaResolver::class)->resolveFromRoute($route, 'api', [], config('rest-generic-class.permissions.authorization'));
+        $meta = app(RouteMetaResolver::class)->resolveFromRoute($route, 'api', [], config('rest-permissions.authorization'));
         $this->assertTrue($meta->global);
     }
 
     public function testNullCatalogMiddlewareIncludesRoutesWithoutMiddleware(): void
     {
-        config(['rest-generic-class.permissions.authorization.catalog_middleware' => null]);
+        config(['rest-permissions.authorization.catalog_middleware' => null]);
         Route::get('admin/auth/login', fn () => 'ok')->name('admin.auth.login');
         $rows = (new RoutePermissionRefresher())->refresh('api', false);
         $this->assertSame(['admin.auth.login'], array_column($rows, 'permission'));
@@ -141,7 +141,7 @@ final class RoutePermissionRefresherTest extends ChannelAuthorizationTestCase
 
     public function testCatalogMatchesAliasesWithParametersWithoutPruningExistingPermissions(): void
     {
-        config(['rest-generic-class.permissions.authorization.catalog_middleware' => ['maybe.permission']]);
+        config(['rest-permissions.authorization.catalog_middleware' => ['maybe.permission']]);
         Route::get('admin/users', fn () => 'ok')->name('admin.users.index')->middleware('maybe.permission:api');
         Route::get('admin/auth/login', fn () => 'ok')->name('admin.auth.login');
         $existing = $this->permission('admin.auth.login');
@@ -159,7 +159,7 @@ final class RoutePermissionRefresherTest extends ChannelAuthorizationTestCase
 
     public function testCatalogAcceptsMultipleMarkersAndMiddlewareClassNames(): void
     {
-        config(['rest-generic-class.permissions.authorization.catalog_middleware' => ['maybe.permission', SpatieAuthorize::class]]);
+        config(['rest-permissions.authorization.catalog_middleware' => ['maybe.permission', SpatieAuthorize::class]]);
         Route::get('admin/users', fn () => 'ok')->name('admin.users.index')->middleware(SpatieAuthorize::class . ':api');
         Route::get('client/users', fn () => 'ok')->name('client.users.index')->middleware('maybe.permission:api');
         Route::get('admin/auth/login', fn () => 'ok')->name('admin.auth.login')->middleware('auth:api');
@@ -170,7 +170,7 @@ final class RoutePermissionRefresherTest extends ChannelAuthorizationTestCase
 
     public function testCatalogIgnoresNonStringMiddleware(): void
     {
-        config(['rest-generic-class.permissions.authorization.catalog_middleware' => ['maybe.permission']]);
+        config(['rest-permissions.authorization.catalog_middleware' => ['maybe.permission']]);
         $closure = fn ($request, $next) => $next($request);
         $object = new \stdClass();
         $included = Route::get('admin/users', fn () => 'ok')->name('admin.users.index');
@@ -185,7 +185,7 @@ final class RoutePermissionRefresherTest extends ChannelAuthorizationTestCase
 
     public function testEmptyCatalogMiddlewareIncludesNoRoutes(): void
     {
-        config(['rest-generic-class.permissions.authorization.catalog_middleware' => []]);
+        config(['rest-permissions.authorization.catalog_middleware' => []]);
         Route::get('admin/users', fn () => 'ok')->name('admin.users.index')->middleware('maybe.permission:api');
         $this->assertSame([], (new RoutePermissionRefresher())->refresh('api', false));
         $this->assertSame(0, ChannelPermission::count());
@@ -193,11 +193,11 @@ final class RoutePermissionRefresherTest extends ChannelAuthorizationTestCase
 
     public function testCatalogFilterDoesNotChangeRequestResolution(): void
     {
-        config(['rest-generic-class.permissions.authorization.catalog_middleware' => []]);
+        config(['rest-permissions.authorization.catalog_middleware' => []]);
         $route = Route::get('admin/users', fn () => 'ok')->name('admin.users.index');
         $request = \Illuminate\Http\Request::create('/admin/users');
         $request->setRouteResolver(fn () => $route);
-        $meta = app(RouteMetaResolver::class)->resolve($request, 'api', [], config('rest-generic-class.permissions.authorization'));
+        $meta = app(RouteMetaResolver::class)->resolve($request, 'api', [], config('rest-permissions.authorization'));
         $this->assertSame('admin.users.index', $meta->canonicalName);
         $this->assertSame([], (new RoutePermissionRefresher())->refresh('api', true));
     }

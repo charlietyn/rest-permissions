@@ -1,9 +1,9 @@
 <?php
 
-namespace Ronu\RestGenericClass\Core\Support\Permissions;
+namespace Ronu\RestPermissions\Support\Permissions;
 
 use Illuminate\Support\Collection;
-use Ronu\RestGenericClass\Core\Support\Permissions\Contracts\PermissionCompressorContract;
+use Ronu\RestPermissions\Support\Permissions\Contracts\PermissionCompressorContract;
 
 final class PermissionCompressor implements PermissionCompressorContract
 {

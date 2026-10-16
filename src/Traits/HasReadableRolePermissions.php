@@ -1,10 +1,10 @@
 <?php
 
-namespace Ronu\RestGenericClass\Core\Traits;
+namespace Ronu\RestPermissions\Traits;
 
 use Illuminate\Support\Collection;
-use Ronu\RestGenericClass\Core\Support\Permissions\PermissionFilter;
-use Ronu\RestGenericClass\Core\Support\Permissions\RolePermissionReader;
+use Ronu\RestPermissions\Support\Permissions\PermissionFilter;
+use Ronu\RestPermissions\Support\Permissions\RolePermissionReader;
 
 trait HasReadableRolePermissions
 {

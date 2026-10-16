@@ -1,6 +1,6 @@
 <?php
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Container\Container;
@@ -8,10 +8,10 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\Facade;
 use PHPUnit\Framework\TestCase;
-use Ronu\RestGenericClass\Core\Support\Permissions\RoleInputResolver;
-use Ronu\RestGenericClass\Core\Support\Permissions\TargetPermissionResolver;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\TargetPermissionItem;
-use Ronu\RestGenericClass\Tests\Unit\Fixtures\TargetRoleItem;
+use Ronu\RestPermissions\Support\Permissions\RoleInputResolver;
+use Ronu\RestPermissions\Support\Permissions\TargetPermissionResolver;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\TargetPermissionItem;
+use Ronu\RestPermissions\Tests\Unit\Fixtures\TargetRoleItem;
 
 final class TargetPermissionResolverTest extends TestCase
 {

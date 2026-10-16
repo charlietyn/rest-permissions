@@ -126,8 +126,8 @@ Five steps. Each step depends on a single extension point that the integrator ow
 ```php
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Collection;
-use Ronu\RestGenericClass\Core\Support\Permissions\Contracts\ProvidesRoles;
-use Ronu\RestGenericClass\Core\Traits\HasReadableUserPermissions;
+use Ronu\RestPermissions\Support\Permissions\Contracts\ProvidesRoles;
+use Ronu\RestPermissions\Traits\HasReadableUserPermissions;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements ProvidesRoles
@@ -145,9 +145,9 @@ class User extends Authenticatable implements ProvidesRoles
 ### Step 2 — Role model
 
 ```php
-use Ronu\RestGenericClass\Core\Models\SpatieRole;
-use Ronu\RestGenericClass\Core\Support\Permissions\Contracts\ProvidesRolePermissions;
-use Ronu\RestGenericClass\Core\Traits\HasReadableRolePermissions;
+use Ronu\RestPermissions\Models\SpatieRole;
+use Ronu\RestPermissions\Support\Permissions\Contracts\ProvidesRolePermissions;
+use Ronu\RestPermissions\Traits\HasReadableRolePermissions;
 
 class Role extends SpatieRole implements ProvidesRolePermissions
 {
@@ -157,15 +157,13 @@ class Role extends SpatieRole implements ProvidesRolePermissions
 
 ### Step 3 (optional) — fail-fast on boot
 
-Declare your model FQCNs in `config/rest-generic-class.php` so the `ServiceProvider` validates the contracts at boot time, not on the first request to `/permissions`:
+Declare your model FQCNs in `config/rest-permissions.php` so the `ServiceProvider` validates the contracts at boot time, not on the first request to `/permissions`:
 
 ```php
-// config/rest-generic-class.php
-'permissions' => [
-    'contracts' => [
-        'user_model' => \App\Models\User::class,
-        'role_model' => \App\Models\Role::class,
-    ],
+// config/rest-permissions.php
+'contracts' => [
+    'user_model' => \App\Models\User::class,
+    'role_model' => \App\Models\Role::class,
 ],
 ```
 
@@ -264,7 +262,7 @@ generated models) **without** writing the body of `provideRoles()` on every mode
 `provideRoles()`. It resolves the relation name with this priority:
 
 1. Per-model constant `ROLES_RELATION` (most specific).
-2. Global config `rest-generic-class.permissions.roles_relation` (env `REST_PERMISSIONS_ROLES_RELATION`).
+2. Global config `rest-permissions.roles_relation` (env `REST_PERMISSIONS_ROLES_RELATION`).
 3. Default `'roles'` (backward compatible).
 
 It then eager-loads `<relation>.enabled_permissions` and **normalizes the cardinality** into a `Collection`.
@@ -387,7 +385,7 @@ class User extends Authenticatable implements ProvidesRoles
 
 **Setup.**
 ```php
-use Ronu\RestGenericClass\Core\Support\Permissions\UserRolesResolver;
+use Ronu\RestPermissions\Support\Permissions\UserRolesResolver;
 
 class AuditUserRoles
 {
@@ -510,37 +508,37 @@ Yes. It's bound as a singleton in the container; just call `app()->extend(UserRo
 
 ## 10. Cross references
 
-- [Public API](../04-reference/00-public-api.md#permissions-contracts-and-resolver)
-- [Exceptions](../04-reference/04-exceptions.md#rolescontractviolationexception)
-- [Troubleshooting](../05-quality/02-troubleshooting.md)
-- [Environment variables](../02-configuration/01-env-vars.md)
-- [Configuration reference](../02-configuration/00-configuration-reference.md)
+- [Public API](https://github.com/charlietyn/rest-generic-class/blob/main/documentacion/doc-en/04-reference/00-public-api.md#permissions-contracts-and-resolver)
+- [Exceptions](https://github.com/charlietyn/rest-generic-class/blob/main/documentacion/doc-en/04-reference/04-exceptions.md#rolescontractviolationexception)
+- [Troubleshooting](https://github.com/charlietyn/rest-generic-class/blob/main/documentacion/doc-en/05-quality/02-troubleshooting.md)
+- [Environment variables](https://github.com/charlietyn/rest-generic-class/blob/main/documentacion/doc-en/02-configuration/01-env-vars.md)
+- [Configuration reference](https://github.com/charlietyn/rest-generic-class/blob/main/documentacion/doc-en/02-configuration/00-configuration-reference.md)
 
-[Back to documentation index](../index.md)
+[Back to documentation index](https://github.com/charlietyn/rest-generic-class/blob/main/documentacion/doc-en/index.md)
 
 ## Evidence
 
-- File: `src/Core/Support/Permissions/Contracts/ProvidesRoles.php`
+- File: `src/Support/Permissions/Contracts/ProvidesRoles.php`
   - Symbol: interface `ProvidesRoles`
   - Notes: User model contract; sole method `provideRoles(): Collection`.
-- File: `src/Core/Support/Permissions/Contracts/ProvidesRolePermissions.php`
+- File: `src/Support/Permissions/Contracts/ProvidesRolePermissions.php`
   - Symbol: interface `ProvidesRolePermissions`
   - Notes: Role model contract; sole method `provideRolePermissions(): Collection`.
-- File: `src/Core/Support/Permissions/UserRolesResolver.php`
+- File: `src/Support/Permissions/UserRolesResolver.php`
   - Symbol: `UserRolesResolver::rolesOf()`, `permissionsViaRoles()`
   - Notes: single resolution point; performs `instanceof` and throws `RolesContractViolationException`.
-- File: `src/Core/Support/Permissions/Exceptions/RolesContractViolationException.php`
+- File: `src/Support/Permissions/Exceptions/RolesContractViolationException.php`
   - Symbol: factories `userMissingContract`, `roleMissingContract`
   - Notes: actionable messages stating exactly which class must implement which interface.
-- File: `src/Core/Traits/HasReadableUserPermissions.php`
+- File: `src/Traits/HasReadableUserPermissions.php`
   - Symbol: `getEnabledPermissionsViaRoles()`, `effectivePermissions()`
   - Notes: delegates via-roles resolution to `UserRolesResolver`.
-- File: `src/Core/Traits/HasReadableRolePermissions.php`
+- File: `src/Traits/HasReadableRolePermissions.php`
   - Symbol: `provideRolePermissions()`
   - Notes: default implementation that returns `$this->enabled_permissions`.
-- File: `src/Core/Providers/RestGenericClassServiceProvider.php`
+- File: `src/RestPermissionsServiceProvider.php`
   - Symbol: `register()`, `assertContractsIfDeclared()`
   - Notes: binds the resolver as a singleton plus optional early validation when FQCNs are declared in config.
-- File: `config/rest-generic-class.php`
-  - Symbol: `permissions.contracts` block
+- File: `config/rest-permissions.php`
+  - Symbol: `contracts` block
   - Notes: optional declaration of `user_model` and `role_model` for boot-time fail-fast.

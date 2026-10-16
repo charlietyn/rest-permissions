@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Ronu\RestGenericClass\Tests\Unit;
+namespace Ronu\RestPermissions\Tests\Unit;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use PHPUnit\Framework\TestCase;
-use Ronu\RestGenericClass\Core\Resolvers\RouteMetaResolver;
-use Ronu\RestGenericClass\Core\Resolvers\RouteMeta;
+use Ronu\RestPermissions\Resolvers\RouteMetaResolver;
+use Ronu\RestPermissions\Resolvers\RouteMeta;
 
 final class RouteMetaResolverScopeTest extends TestCase
 {
