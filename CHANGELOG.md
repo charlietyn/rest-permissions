@@ -2,7 +2,7 @@
 
 ## 1.0.0 — Extracted from rest-generic-class / Extraído de rest-generic-class
 
-Status / Estado: **ready / lista** (2026-10-16), not yet published / sin publicar. Released together with
+Status / Estado: **released / publicada** (2026-10-18). Released together with
 rest-generic-class 3.0.0. / Se publica junto con rest-generic-class 3.0.0.
 
 ### English
@@ -11,6 +11,9 @@ rest-generic-class 3.0.0. / Se publica junto con rest-generic-class 3.0.0.
   effective-permission Gate, readers, compressor, role assignment, Spatie models, `PermissionsController`, the
   permission routes and the channel-authorization migration script) move here with their git history, under
   `Ronu\RestPermissions\…`. Same behaviour as rest-generic-class 2.9.0.
+- Includes the rest-generic-class 2.8.2 fixes: `users:assign-permissions` / `assignPermissionToUsers` and
+  `directPermissions()` / `rolePermissions()` work on user models without Spatie's `HasPermissions`/`HasRoles`
+  (writes and reads go through the package's own morph relation; models with Spatie's trait keep Spatie's API).
 - `RestPermissionsServiceProvider` (auto-discovered) binds `RouteAuthorizationContext` as the core's
   `AuthorizationContext` (any provider order), and registers the Gate (`register_gate`), the routes
   (`routes.enabled`) and the contract checks.
@@ -29,6 +32,8 @@ rest-generic-class 3.0.0. / Se publica junto con rest-generic-class 3.0.0.
   `RouteMetaResolver`, Gate de permisos efectivos, lectores, compresor, asignación a roles, modelos Spatie,
   `PermissionsController`, rutas de permisos y el script de migración) se mueven aquí con su historial de git,
   bajo `Ronu\RestPermissions\…`. Mismo comportamiento que rest-generic-class 2.9.0.
+- Incluye las correcciones de rest-generic-class 2.8.2: `users:assign-permissions` / `assignPermissionToUsers` y
+  `directPermissions()` / `rolePermissions()` funcionan con usuarios sin `HasPermissions`/`HasRoles` de Spatie.
 - `RestPermissionsServiceProvider` (autodescubierto) registra `RouteAuthorizationContext` como `AuthorizationContext`
   del núcleo (en cualquier orden de providers), el Gate, las rutas y la validación de contratos.
 - Configuración en `config/rest-permissions.php`; mismas variables de entorno. La autorización de `?relations=`

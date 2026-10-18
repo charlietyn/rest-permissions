@@ -38,7 +38,7 @@ jobs:
       - run: composer require --dev --no-update "orchestra/testbench:${{ matrix.testbench }}" "phpunit/phpunit:${{ matrix.phpunit }}"
       - run: composer update --prefer-dist --no-interaction --no-progress --with-all-dependencies
       - run: composer audit
-      - run: composer show ronu/rest-generic-class spatie/laravel-permission laravel/framework
+      - run: composer show | grep -E "^(ronu/rest-generic-class|spatie/laravel-permission|laravel/framework) "
       - run: vendor/bin/phpunit
 
   databases:
