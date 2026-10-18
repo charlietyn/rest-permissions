@@ -54,6 +54,7 @@ One revision of each package / una revisión de cada paquete. `composer validate
 | rest-permissions 1.0 | 8.3.28 / 8.4.15 | 12.70.0 | 7.4.2, 7.0.0, 8.3.0 | 172 tests, OK |
 | rest-permissions 1.0 | 8.3.28 / 8.4.15 / 8.5.0 | 13.30.1 / 13.37.0 | 6.25.0, 7.4.2, 8.0.0, 8.3.0 | 172 tests, OK |
 
+With the 2.8.2 fixes (2026-10-18): 177 tests, 607 assertions, OK (PHP 8.4, Laravel 13, Spatie 8.3).
 The plugin's `tests/Integration` suite also passes on MySQL 8.4 (19 tests). / La suite de integración del plugin
 también pasa en MySQL 8.4.
 
